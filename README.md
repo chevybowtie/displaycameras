@@ -12,22 +12,18 @@ If you feel compelled to contribute to the project, feel free to send funds to h
   * The main script, normally installed at /usr/bin/displaycameras has an LSB header and will run as a systemv init script (if copied to /etc/init.d/...maybe just symlink to the /usr/bin/ location [untested])?  No other init systems have been tested or are supported.
 
 # Download/Install/Upgrade/Remove
-## Download the Archive
-### Latest Release (recommended)
-Go to https://github.com/Anonymousdog/displaycameras/releases/latest and download the Source Code (tar.gz) file
-### Latest Commits (only when directed)
-Download https://github.com/Anonymousdog/displaycameras/archive/master.tar.gz
-
-## Unpack the Archive
-1. `tar -xvzf ./<source_code.tar.gz>`
-2. `cd ./<source_code directory>` to move to the directory where the archive unpacked
+## Clone
+```
+$ git clone https://github.com/chevybowtie/displaycameras.git
+$ cd displaycameras
+```
 
 ## Make the Installer Executable
 `chmod u+x ./install.sh`
 
 ## Installation
 1. `sudo ./install.sh`
-2. Accept the offer to view the README after successful installation and follow the instructions therein
+2. Decline the offer to view the README after successful installation and follow the instructions therein (it's this file so no real need)
 
 ## Upgrade
 `sudo ./install.sh upgrade`
@@ -67,9 +63,11 @@ Camera Names must conform to DBUS namespace restrictions: valid UTF-8 only conta
 
 * Global options (exept for displaydetect) in the main conf file may be overridden (for specific displays) by supplying their values in these files.
 * Do NOT override 'displaydetect' settings in a layout config file; you will create problems.
+
 #### Layout Conf Files
 * All files in /etc/displaycameras/ which follow the naming convention 'layout.conf.<display resolution>' or the default layout conf file, layout.conf.default.
 * Unless you enable display detection in the main config file, the system will always use the default layout conf file.
+
 #### Default Layout Config File
 The default layout file now has rotation disabled by default; so, it's safe to throw your camera names and feeds in there and just use it if you want an onscreen 2x2 matrix on reliably 1080p displays.  If you have more than four cameras, you'll want to uncomment the last line.
 
@@ -81,17 +79,20 @@ Once that is resolved, adjust startsleep upward until you no longer see script o
 When you complete testing, clean up by stopping all test processes with `sudo /usr/bin/displaycameras stop`.
 
 ### Debugging
+
 #### Verify omxplayer will play your feed RTSP URLs
 To definitively rule out problems with omxplayer not playing your RTSP feeds, run the following in an SSH session:
 `sudo omxplayer --no-keys --no-osd --avdict rtsp_transport:tcp <camera feed URL> --live -n -1 --timeout 30`
 	
 If your feed plays, there's a problem with your config for displaycameras.  If not, there's a problem with your URL or omxplayer won't play your feed.
+
 #### Verify valid feed RTSP URLs
 If that happens, you can verify the feed by trying to play it from VLC on the RPi or another device on the same network as the RPi.
 
 If VLC plays it, you know the stream exists and that you have the correct URL.
 
 ## Managing the Service
+
 The installer registers and activates the displaycameras service; so, it will start with the system (once networking and DBUS are running).
 
 ### Manual Service Management
@@ -108,6 +109,7 @@ The installer registers and activates the displaycameras service; so, it will st
 
 ## Advanced Configurations
 Perform all the steps in the minimal configuration and review the following options for tweaks to your setup.
+
 ### Display Detection
 Enable display detection in displaycameras.conf and setup special layout configuration files for any display resolutions you want to support with auto-detection.  Use the 1440x900 or 1280x1028 (and other) files as examples, and duplicate the naming convention for these configuration file names, '/etc/displaycameras/layout.conf.<display resolution>' (e.g., /etc/displaycameras/layout.conf.1024x768). <--No, a 1024x768 layout config file is not included in this package.
 
